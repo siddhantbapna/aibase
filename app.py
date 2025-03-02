@@ -8,10 +8,37 @@ app = Flask(__name__)
 api = Api(app)
 
 
-def makeS (s):
+def makeS (s, t):
     s = s
     b = "Do it yourself"
+
+    if t == "gen":
+        b = f"""
+            Scope: { db['week'][s['week']]['summary'] } 
+            Number of Questions: { s.get('N', 3)}
+        """
+
+    elif t == "sumup":
+
+        isweek = s.get("week", False)
+        islec = s.get("lecture", False)
+
+        if islec and isweek:
+            b = db['week'][isweek]['lecture'][islec]["summary"]
+        elif isweek:
+            b = db['week'][isweek]["summary"]
+        else:
+            b = "Do what ever you think is appropraite"
+    
+    elif t == "chat":
+        b = f"{b}"
+
+    else:
+        b = "Do what ever you think is appropraite"
+
     return b
+
+
 
 class AI(Resource):
 
@@ -22,44 +49,23 @@ class AI(Resource):
         p = s["prompt"]
         b = s["background"]
 
-        c = makeS(b) # Make it using the background details
+        c = makeS(b, t) # Make it using the background details
 
+        i = { 
+            "prompt" : p,
+            "content" : c
+        }
 
-        if s["type"] == "sumup":
+        link = {
+            "gen" : ink.generate_questions,
+            "sumup" : ink.summarize,
+            "chat" : ink.chat,
+            "analyse" : ink.chat,
+            "explain" : ink.chat
+        }
 
-            d = ink.summarize({
-                "query" : s["prompt"],
-                "content" : c
-            })
-
-        elif s["type"] == "gen":
-            d = ink.generate_questions({
-                "topic" : "s Types 1",
-                "scope" : s["prompt"],
-                "N" : 3
-            })
-
-        elif s["type"] == "chat":
-            d = ink.chat({
-                "topic" : "s Types 1",
-                "query" : s["prompt"],
-                "content" : "On Quantum Computer"
-            })
-
-        elif s["type"] == "explain":
-            d = ink.chat({
-                "topic" : "s Types 1",
-                "query" : s["prompt"],
-                "content" : "On Quantum Computer"
-            })
-        
-        elif t == "analyse":
-            d = ink.chat({
-                "topic" : "s Types 1",
-                "query" : s["prompt"],
-                "content" : "On Quantum Computer"
-            })
-
+        if (link[t]):
+            d = link[t](i)
         else :
             d = "Invaild"
 

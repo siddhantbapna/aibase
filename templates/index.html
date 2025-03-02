@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSON POST Example</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="left">
-            <h3>Navigation</h3>
+            <h3>Select a Test Case</h3>
             <div id="navContainer">
                 <!-- Dynamic Navigation will be inserted here -->
             </div>
@@ -26,6 +27,8 @@
     </div>
 
     <script src="{{ url_for('static', filename='testcase.js') }}"></script>
+
+    
 
     <script>
         // Populate the navigation container with items

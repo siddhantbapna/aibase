@@ -10,17 +10,19 @@ const jsonObjects = [
     {
         "type": "gen",
         "prompt": "",
-        "background" : {
-            "week" : 2,
-            "subject" : "python"
+        "background": {
+          "week": 5,
+          "subject": "python",
+          "N" : 10
         }
     },
 
+
     {
         "type": "sumup",
-        "prompt": "",
+        "prompt": "Can you help me understand it in easy terms",
         "background" : {
-            "week" : 2,
+            "week" : 5,
             "subject" : "python"
         }
     },
@@ -34,10 +36,20 @@ const jsonObjects = [
         }
     },
 
+    {
+        "type": "chat",
+        "prompt": "Hi, How are you",
+        "background" : {
+            "page" : "dashboard",
+            "week" : 2,
+            "lecture" : 3,
+            "subject" : "python"
+        }
+    },
 
     {
         "type": "chat",
-        "prompt": "Hello, how can you can you solve this question for me?",
+        "prompt": "Can you tell me the answer to this question",
         "background" : {
             "page" : "dashboard",
             "week" : 2,
