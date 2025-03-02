@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON POST Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+        }
+        .left, .right {
+            width: 48%;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            font-family: monospace;
+            font-size: 14px;
+            padding: 10px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #f4f4f4;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <h3>Input JSON</h3>
+            <textarea id="jsonInput" placeholder='{"key": "value"}'></textarea>
+            <button onclick="sendPostRequest()">Post JSON</button>
+        </div>
+
+        <div class="right">
+            <h3>Response JSON</h3>
+            <pre id="responseDisplay"></pre>
+        </div>
+    </div>
+
+    <script>
+        function sendPostRequest() {
+            const jsonInput = document.getElementById('jsonInput').value;
+
+            let parsedData;
+            try {
+                parsedData = JSON.parse(jsonInput);
+            } catch (e) {
+                alert('Invalid JSON format');
+                return;
+            }
+
+            fetch('/ai', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(parsedData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('responseDisplay').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                alert('Error sending request: ' + error);
+            });
+        }
+    </script>
+</body>
+</html>
